@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block navbar %}
+
+    {% include 'components/navbar.html' %}
+
+{% endblock navbar %}
+
+{% block content %}
+
+{% include 'components/message.html' %}
+
+{% block title %}{% endblock title %}<h1 style="text-align: center;">Body Mass Index List</h1>
+
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-striped">
+                <tr>
+                    <th>S.No.</th>
+                    <th>Username</th>
+                    <th>Weight</th>
+                    <th>Height</th>
+                    <th>BMI</th>
+                    <th>Suggestions</th>
+                    <th>Action</th>
+                </tr>
+                {% for bmi in bmis %}
+                <tr>
+                    <td>
+                        <a href="{% url 'bmi:bmi_edit' bmi.id %}">{{ bmi.id }}</a>
+                    </td>
+                    <td>{{ bmi.user }}</td>
+                    <td>{{ bmi.weight }}</td>
+                    <td>{{ bmi.height }}</td>
+                    <td>{{ bmi.bmi }}</td>
+                    <td></td>
+                    <td>
+                        <a href="{% url 'bmi:bmi_delete' bmi.id %}" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+    </div>
+    </div>
+</div>
+
+{% endblock content %}

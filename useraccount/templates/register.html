@@ -1,0 +1,6 @@
+<form method="POST">
+    {%csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" name="register" value="Rgister" />
+</form>
+<p>Aredy a User ? <a href="{% url 'user:login' %}">Login</a></p>

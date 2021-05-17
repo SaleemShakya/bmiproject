@@ -1,0 +1,23 @@
+{% load static %}
+
+<!DOCTYPE html>
+    <html lang="en">
+
+        <head>
+            <title>{{block.title}}{{enblock.title}}BMI Calculator</title>
+        </head>
+        
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" /> 
+
+        <body>
+            {% block navbar %}
+
+            {% endblock navbar %}
+
+            {% block content %}
+                <p>This is base </p>
+            {% endblock content %}
+            
+        </body>
+        <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+    </html>

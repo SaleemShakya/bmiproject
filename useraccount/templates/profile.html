@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block navbar %}
+
+    {% include 'components/navbar.html' %}
+
+{% endblock navbar %}
+
+{% block content %}
+
+    <div class="container" style="text-align: center;">
+        <p><h2>User Profile</h2></p>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="col-md-6">
+                          <!-- {{ form.as_p}} -->
+                          {% for field in form %}
+                            <div class="fieldWrapper">
+                                {{ field.label_tag }}{{ field }}
+                            </div>
+                          {% endfor %}
+                        <br>
+                        <button type="submit"class="btn btn-success">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
