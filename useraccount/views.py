@@ -58,7 +58,7 @@ def send_confirm_email(request):
     subject = "Test Subject"
     message = "Test Message"
     from_email = "shahram6154@gmail.com"
-    reciepient_list = ["saugatbasnet5@gmail.com","shakya.saleem@gmail.com"]
+    reciepient_list = ["saugatbasnet5@gmail.com","shakya.saleem@gmail.com",]
     context = { "name" : "Saugat" }
     html_message = render_to_string("email.html", context)
     result = send_mail(subject, message, from_email, reciepient_list, html_message=html_message)

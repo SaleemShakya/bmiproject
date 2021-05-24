@@ -4,6 +4,7 @@ from calculator.models import Bmi,Suggestion
 from calculator.forms import BmiForm
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
+from django.core.mail import send_mail
 
 # Create your views here.
 
@@ -12,17 +13,6 @@ def suggest(request):
     context = { "suggests":suggests }
     return render(request,"suggest.html",context)
 
-    if bmi <= 18.5:
-        print("Your are underweight")
-
-    elif bmi <= 24.9:
-        print("You are normal")
-
-    elif bmi <= 29.9:
-        print("Your are overweight")
-
-    elif bmi <= 30.0:
-        print("Your are obsessed")
         
 @login_required  
 def bmi_list(request):
@@ -36,6 +26,9 @@ def bmi_add(request):
     # if request.method == "POST":
     form = BmiForm(request.POST or None)
     if form.is_valid():
+        bmi = form.save(commit=False)
+        bmi.user = request.user
+        form.save()
         height = form.cleaned_data["height"]
         weight = form.cleaned_data["weight"]
         bmi = weight / height**2
@@ -48,9 +41,7 @@ def bmi_add(request):
         elif bmi > 30.0:
             messages.error(request,"Obssesed Weight")
         return render(request,"form.html",{"bmi":bmi})
-        bmi = form.save(commit=False)
-        bmi.user = request.user
-        form.save()
+       
         return HttpResponseRedirect(reverse("bmi:bmi_list"))
     context = { "form":form }
     return render(request,"form.html",context)
@@ -72,5 +63,18 @@ def bmi_delete(request, id):
     bmi = get_object_or_404(Bmi,id=id)
     bmi.delete()
     return HttpResponseRedirect(reverse("bmi:bmi_list"))
+
+def send_report(request):
+    bmi = round(Bmi.bmi(Bmi.objects.all().last()),2)
+    if bmi <= 18.6:
+        message = "Underweight.You need to increase your weight"
+    elif bmi >= 18.6 and bmi <= 24.9:
+        message = "Normal Weight.You are fit and fine keep it up"
+    elif bmi > 25 and bmi <= 29.9:
+        message = "Overweight.You need to reduce your weight."
+    else:
+        message = "Obsessed.You are obessed, please consult a doctor"
+    send_mail("BMI report",message + "Your BMI is" +str(bmi),"shahram6154@gmail.com",[request.user.profile.email])
+    return render(request,"report.html",{})
 
 

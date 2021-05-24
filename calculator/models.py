@@ -30,7 +30,7 @@ from django.contrib.auth.models import User
 
 class Bmi(models.Model):
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
+    user = models.ForeignKey(User,related_name="bmi",on_delete=models.CASCADE,null=True)
     weight = models.FloatField()
     height = models.FloatField()
     bmi = models.FloatField()
